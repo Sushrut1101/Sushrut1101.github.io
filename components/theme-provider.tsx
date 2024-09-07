@@ -26,9 +26,6 @@ export function ThemeProvider({
   children,
   defaultTheme = 'system',
   storageKey = 'vite-ui-theme',
-  attribute,
-  enableSystem,
-  disableTransitionOnChange,
   ...props
 }: ThemeProviderProps & {
   attribute?: string;

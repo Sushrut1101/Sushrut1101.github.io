@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -146,7 +147,7 @@ export default function Portfolio() {
     }
   ];
 
-  const navigation = [
+  const navigation = useMemo(() => [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
     { name: 'Skills', href: '#skills' },
@@ -154,7 +155,30 @@ export default function Portfolio() {
     { name: 'Projects', href: '#projects' },
     { name: 'Education', href: '#education' },
     { name: 'Contact', href: '#contact' }
-  ];
+  ], []);
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut" as const,
+      },
+    },
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -176,7 +200,7 @@ export default function Portfolio() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [navigation]);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -188,29 +212,6 @@ export default function Portfolio() {
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: 'easeOut',
-      },
-    },
   };
 
   return (
@@ -385,7 +386,7 @@ export default function Portfolio() {
           >
             <h2 className="text-4xl font-bold text-foreground mb-4">About Me</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              I'm a passionate computer science student with a strong focus on cybersecurity,
+              I&apos;m a passionate computer science student with a strong focus on cybersecurity,
               open source development, and Android systems. My journey spans from low-level
               kernel development to high-level security implementations.
             </p>
@@ -798,7 +799,7 @@ export default function Portfolio() {
           >
             <h2 className="text-4xl font-bold text-foreground mb-4">Get In Touch</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              I'm always open to discussing new opportunities, collaborations,
+              I&apos;m always open to discussing new opportunities, collaborations,
               or just having a conversation about technology and cybersecurity.
             </p>
           </motion.div>
